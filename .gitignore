@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+
+# 환경 변수 (예시 파일만 커밋)
+.env
+.env.*
+!.env.example
+
+# 비공개 데이터: 코퍼스 설정, 평가셋, 결과, 적재 보고서는 PRIVATE_DIR 에만 둔다
+config/corpus.yaml
+data/
+eval/sets/*
+!eval/sets/public-sample/
+eval/results/
+*.jsonl
+!eval/sets/public-sample/*.jsonl
+
+# 모델·캐시
+models/
+.cache/
+*.safetensors
+*.gguf
+
+# OS·편집기
+.DS_Store
+.idea/
+.vscode/
