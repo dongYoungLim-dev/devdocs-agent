@@ -1,0 +1,13 @@
+# 모델별 특성. 코드는 모델 이름으로 분기하지 않고 이 표만 본다
+# ctx: 컨텍스트 길이(로컬은 Ollama 환경 변수 OLLAMA_CONTEXT_LENGTH 로 고정, 여기 값은 기록용)
+# temperature: null 이면 요청에 아예 넣지 않는다(Claude 는 1 미만이면 400)
+# price_in/out: USD / 1M 토큰
+# reasoning_field: 스트림에서 생각 토큰이 오는 필드 이름. null = 생각 필드 없음 또는 미확인. 어느 쪽인지 행 끝 주석에 적는다
+models:
+  qwen3.6:35b:       { ctx: 16384,  temperature: 0.2,  price_in: 0,    price_out: 0,     reasoning_field: reasoning }  # M0 확인
+  gemma4:26b:        { ctx: 16384,  temperature: 0.2,  price_in: 0,    price_out: 0,     reasoning_field: reasoning }  # M0 확인
+  gpt-oss:20b:       { ctx: 16384,  temperature: 0.2,  price_in: 0,    price_out: 0,     reasoning_field: reasoning }  # M0 확인
+  qwen3:30b-a3b:     { ctx: 16384,  temperature: 0.2,  price_in: 0,    price_out: 0,     reasoning_field: null }   # 대체 후보(설치됨), reasoning_field 미확인
+  claude-haiku-5-5:  { ctx: 100000, temperature: null, price_in: 0.10, price_out: 0.50,  reasoning_field: null }  # 미확인(M0 보류)
+  claude-sonnet-5-5: { ctx: 200000, temperature: null, price_in: 2.00, price_out: 10.00, reasoning_field: null }  # judge 전용, 미확인
+  gemini-4-hydrogen: { ctx: 1048576, temperature: null, price_in: 0, price_out: 0, reasoning_field: null, rpm: 5 }  # M0 확인: 생각 필드 없음(extra_content 는 thought_signature)

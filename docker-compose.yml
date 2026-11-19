@@ -1,0 +1,21 @@
+services:
+  devdocs-pg: # 서비스 이름. compose exec 등에서 이 이름으로 부른다
+    image: pgvector/pgvector:0.8.7-pg18         # 위에서 확인한 고정 태그
+    container_name: devdocs-pg                  # docker ps 에 보일 컨테이너 이름
+    environment: # 처음 띄울 때 만들 계정과 DB(.env.example 의 DATABASE_URL 과 같은 값)
+      POSTGRES_USER: devdocs
+      POSTGRES_PASSWORD: devdocs                # 개발용 값. 127.0.0.1 에만 열어 두므로 외부에서는 접속할 수 없다
+      POSTGRES_DB: devdocs
+    ports:
+      - "127.0.0.1:5432:5432"                   # 맥의 5432 를 컨테이너 5432 로 연결. 127.0.0.1 이라 이 맥에서만 접속된다
+    volumes:
+      - devdocs-pgdata:/var/lib/postgresql      # 데이터를 이름 있는 볼륨에 둔다. 컨테이너를 지워도 데이터는 남는다
+    healthcheck: # DB가 접속을 받을 준비가 됐는지 주기적으로 검사한다
+      test: [ "CMD-SHELL", "pg_isready -U devdocs -d devdocs" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped                     # Docker 를 다시 켜면 자동으로 다시 뜬다(직접 끈 경우는 제외)
+
+volumes:
+  devdocs-pgdata:                               # 위에서 쓴 이름 있는 볼륨을 선언한다

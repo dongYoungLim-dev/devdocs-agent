@@ -1,0 +1,14 @@
+# 검색 대상 허용 목록 예시. 실제 목록은 PRIVATE_DIR/corpus.yaml 에 둔다
+# kind: ds | structure-note | harness | app
+# include/exclude: source 기준 상대 glob. exclude 가 include 보다 우선한다
+sources:
+  - name: example-app
+    kind: app
+    source: ~/projects/example-app
+    include: ["README.md", "docs/*.md", "src/main/resources/mapper/**/*.xml", "db/migration/*.sql"]
+    exclude: ["target/**", ".env*", "uploads/**"]
+  - name: example-notes
+    kind: structure-note
+    source: ~/notes/example-vault
+    include: ["**/*.md"]
+    exclude: [".obsidian/**"]

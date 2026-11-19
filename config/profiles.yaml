@@ -1,0 +1,20 @@
+# 실행 프로필. .env 의 PROFILE 값으로 고른다
+# api_key: 비밀이 아닌 자리표시 값만 적는다(Ollama 는 키를 검사하지 않지만 SDK 가 빈 키를 거부한다)
+# api_key_env: 진짜 키를 담은 환경 변수 이름. 값은 .env 에만 둔다(이 파일은 공개 저장소에 올라간다)
+profiles:
+  onprem:            # 외부 통신 0
+    llm:   { base_url: http://localhost:11434/v1, api_key: ollama, model: qwen3.6:35b }
+    embed: { base_url: http://localhost:11434/v1, model: bge-m3 }
+    allow_egress: false        # true가 아니면 cloud 호출·Langfuse·GitHub 전송을 시작 단계에서 거부
+  saas:
+    llm:   { base_url: https://api.anthropic.com/v1/, api_key_env: ANTHROPIC_API_KEY, model: claude-haiku-5-5 }
+    embed: { base_url: http://localhost:11434/v1, model: bge-m3 }
+    allow_egress: true
+  hybrid:            # 검색은 로컬, 생성만 클라우드
+    llm:   { base_url: https://api.anthropic.com/v1/, api_key_env: ANTHROPIC_API_KEY, model: claude-haiku-5-5 }
+    embed: { base_url: http://localhost:11434/v1, model: bge-m3 }
+    allow_egress: true
+  gemini:
+    llm:   { base_url: https://generativelanguage.googleapis.com/v1beta/openai/, api_key_env: GEMINI_API_KEY ,model: gemini-4-hydrogen }
+    embed: { base_url: http://localhost:11434/v1, model: bge-m3 }
+    allow_egress: true
