@@ -21,4 +21,25 @@ Python 3.13 · FastAPI · PostgreSQL + pgvector · Ollama · MCP · Langfuse · 
 
 ## 실행
 
-준비 중입니다.
+지금은 M1 단계입니다. 검색 없이 LLM 답변을 SSE 로 흘리고, 요청마다 지표를 `requests` 테이블에 남깁니다.
+
+```bash
+cp .env.example .env    # API_KEY 를 채운다. 비어 있으면 모든 /v1/chat 요청이 401 이다
+docker compose up -d
+docker compose exec -T devdocs-pg psql -U devdocs -d devdocs -v ON_ERROR_STOP=1 < src/devdocs_agent/db/schema.sql
+uv run uvicorn devdocs_agent.api.main:app --port 8000
+```
+
+```bash
+curl -N -X POST localhost:8000/v1/chat -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"message":"인덱스를 한 문장으로 설명해 주세요.","model":"gpt-oss:20b"}'
+# event: meta → event: token … → event: usage → event: done
+```
+
+테스트는 가짜 LLM 으로 돌아서 Ollama 와 DB 가 없어도 됩니다.
+
+```bash
+uv run pytest -m "not live"
+```
+
+`scripts/smoke.py` 는 M0 에서 모델마다 스트리밍과 도구 호출이 되는지 점검한 도구입니다. 그래서 "LLM 호출은 `llm/client.py` 에서만" 규칙의 예외로, OpenAI SDK 를 직접 부릅니다.

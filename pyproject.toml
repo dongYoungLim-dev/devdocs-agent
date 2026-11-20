@@ -8,10 +8,12 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi>=0.165.0",
     "openai>=3.55.0",
     "psycopg[binary]>=3.3.9",
     "python-dotenv>=1.2.4",
     "pyyaml>=6.0.3",
+    "uvicorn>=0.54.0",
 ]
 
 [project.scripts]
@@ -26,3 +28,5 @@ dev = [
     "pytest>=9.2.0",
     "ruff>=0.17.5",
 ]
+[tool.pytest.ini_options]
+markers = ["live: 실제 Ollama·클라우드 API 를 부르는 테스트. 기본 실행에서는 -m \"not live\" 로 뺀다"]
